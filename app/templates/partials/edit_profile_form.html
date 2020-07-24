@@ -1,0 +1,40 @@
+<form action="" method="post" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+        {{ form.username.label }}
+        {{ form.username(class_="form-control") }}
+        {% for error in form.username.errors %}
+        <small class="form-text text-danger">[{{ error }}]</small>
+        {% endfor %}
+    </div>
+    <div class="form-group">
+        {{ form.email.label }}
+        {{ form.email(class_="form-control") }}
+        {% for error in form.email.errors %}
+        <small class="form-text text-danger">[{{ error }}]</small>
+        {% endfor %}
+    </div>
+    <div class="form-group">
+        {{ form.about_me.label }}
+        {{ form.about_me(class_="form-control", rows=4) }}
+        {% for error in form.about_me.errors %}
+        <small class="form-text text-danger">[{{ error }}]</small>
+        {% endfor %}
+    </div>
+    <div class="input-group mb-3 form-control">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+        </div>
+        <div class="custom-file">
+          {{ form.picture(class="custom-file-input") }}
+          {{ form.picture.label(class_="custom-file-label") }}
+          {% for error in form.picture.errors %}
+          <small class="form-text text-danger">[{{ error }}]</small>
+          {% endfor %}
+        </div>
+      </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary form-control">Update</button>
+    </div>
+    
+</form>
