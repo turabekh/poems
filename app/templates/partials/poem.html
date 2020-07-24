@@ -9,7 +9,7 @@
             
         </td>
         <td>
-            <a href="{{ url_for('user', username=poem.author.username) }}">
+            <a href="{{ url_for('users.user', username=poem.author.username) }}">
                 {{ poem.author.username }}
             </a>
             says: {{ moment(poem.created_at).fromNow() }}:

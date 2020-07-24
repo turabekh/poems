@@ -25,8 +25,8 @@
         <button type="submit" class="btn btn-primary form-control">Submit</button>
         <div>
             <small class="form-text text-muted">
-                New user? <a href="{{ url_for('register') }}">Sing Up</a>
-                <span id="password-reset">Forgot Password? <a href="{{ url_for('reset_password_request') }}">Click to Reset Password</a></span>
+                New user? <a href="{{ url_for('auth.register') }}">Sing Up</a>
+                <span id="password-reset">Forgot Password? <a href="{{ url_for('auth.reset_password_request') }}">Click to Reset Password</a></span>
             </small>
         </div>
     </div>
