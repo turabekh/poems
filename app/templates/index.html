@@ -3,7 +3,7 @@
 {% block content %}
     <div class="row">
         <div class="col">
-            <h1>Hi, {{ user.username }}!</h1>
+            <h1>Hi, {{ current_user.username }}!</h1>
             {% for poem in poems %}
             <div><p>{{ poem.author.username }} says: <b>{{ poem.body }}</b></p></div>
             {% endfor %}
