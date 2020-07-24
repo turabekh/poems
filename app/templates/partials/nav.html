@@ -16,6 +16,15 @@
           </ul>
           <ul class="navbar-nav">
             {% if current_user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link text-white" href="{{ url_for('create_category') }}">New Category</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="{{ url_for('create_poem') }}">New Poem</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="{{ url_for('user', username=current_user.username) }}">Profile</a>
+            </li>
               <li class="nav-item">
                 <a class="nav-link text-white" href="{{ url_for('user', username=current_user.username) }}">Profile</a>
               </li>

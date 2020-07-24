@@ -5,8 +5,14 @@
         <div class="col">
             <h1>Hi, {{ current_user.username }}!</h1>
             {% for poem in poems %}
-            <div><p>{{ poem.author.username }} says: <b>{{ poem.body }}</b></p></div>
+                {% include "partials/poem.html" %}
             {% endfor %}
+            {% if prev_url %}
+            <a href="{{ prev_url }}">Newer poems</a>
+            {% endif %}
+            {% if next_url %}
+            <a href="{{ next_url }}">Older poems</a>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

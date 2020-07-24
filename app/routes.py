@@ -5,9 +5,9 @@ from PIL import Image
 from flask import render_template, flash, redirect, url_for, request
 from werkzeug.urls import url_parse
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm
+from app.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm, PoemForm, CategoryForm
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User
+from app.models import User, Poem, Category
 
 
 @app.before_request
@@ -34,17 +34,14 @@ def save_picture(form_picture):
 @app.route('/')
 @app.route('/index')
 def index():
-    poems = [
-        {
-            'author': {'username': 'John'},
-            'body': 'Beautiful day in Portland!'
-        },
-        {
-            'author': {'username': 'Susan'},
-            'body': 'The Avengers movie was so cool!'
-        }
-    ]
-    return render_template('index.html', title='Home', poems=poems)
+    page = request.args.get('page', 1, type=int)
+    poems = Poem.query.order_by(Poem.created_at.desc()).paginate(page, app.config["POEMS_PER_PAGE"], False)
+    next_url = url_for('index', page=poems.next_num) \
+        if poems.has_next else None
+    prev_url = url_for('index', page=poems.prev_num) \
+        if poems.has_prev else None
+    return render_template('index.html', title='Home', poems=poems.items, next_url=next_url,
+                           prev_url=prev_url)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -163,3 +160,29 @@ def unfollow(username):
         return redirect(url_for('user', username=username))
     else:
         return redirect(url_for('index'))
+
+
+@app.route("/poem", methods=["GET", "POST"])
+def create_poem():
+    categories = [(c.id, c.name) for c in Category.query.all()]
+    form = PoemForm()
+    form.category.choices = categories
+    if form.validate_on_submit():
+        poem = Poem(body=form.poem.data, author=current_user, category_id=form.category.data)
+        db.session.add(poem)
+        db.session.commit()
+        flash('Your poem is now live!', "success")
+        return redirect(url_for('create_poem'))
+    return render_template("create_poem.html", form=form)
+
+
+@app.route("/category", methods=["GET", "POST"])
+def create_category():
+    form = CategoryForm()
+    if form.validate_on_submit():
+        category = Category(name=form.name.data)
+        db.session.add(category)
+        db.session.commit()
+        flash('Your category is successfully added!', "success")
+        return redirect(url_for('create_category'))
+    return render_template("create_category.html", form=form)

@@ -1,8 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, SelectField
 from flask_wtf.file import FileField, FileAllowed
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length
-from app.models import User
+from app.models import User, Poem, Category
 from flask_login import current_user
 
 class LoginForm(FlaskForm):
@@ -55,3 +55,21 @@ class EditProfileForm(FlaskForm):
 
 class EmptyForm(FlaskForm):
     submit = SubmitField('Submit')
+
+
+
+class PoemForm(FlaskForm):
+    category = SelectField("Category", coerce=int)
+    poem = TextAreaField('Enter Your Poem', validators=[
+        DataRequired()])
+    submit = SubmitField('Submit')
+
+class CategoryForm(FlaskForm):
+    name = StringField("Category", validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+
+    def validate_categoryname(self, username):
+        category = Category.query.filter_by(name=name.data).first()
+        if name is not None:
+            raise ValidationError('Please use a different category name. It already exists.')

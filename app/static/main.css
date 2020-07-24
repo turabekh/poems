@@ -9,3 +9,7 @@
 main {
     margin-top: 5rem;
 }
+
+.article-content {
+    white-space: pre-line;
+}

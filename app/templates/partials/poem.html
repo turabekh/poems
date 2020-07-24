@@ -1,0 +1,19 @@
+<table>
+    <tr valign="top">
+        <td>
+            {% if poem.author.image_file %} 
+                <img src="{{ url_for('static', filename='profile_pics/' + poem.author.image_file)  }}"class="img-thumbnail" style="width: 40px; height: 40px;">    
+            {% else %}
+            <img src="{{ poem.author.avatar(46) }}"class="img-thumbnail" style="width: 40px; height: 40px;"> 
+            {% endif %}
+            
+        </td>
+        <td>
+            <a href="{{ url_for('user', username=poem.author.username) }}">
+                {{ poem.author.username }}
+            </a>
+            says:
+            <p class="article-content"> {{ poem.body }} </p>
+        </td>
+    </tr>
+</table>
