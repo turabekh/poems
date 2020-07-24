@@ -13,3 +13,7 @@ main {
 .article-content {
     white-space: pre-line;
 }
+
+#password-reset {
+    float: right;
+}

@@ -23,7 +23,12 @@
     </div>
     <div class="form-group">
         <button type="submit" class="btn btn-primary form-control">Submit</button>
-        <small id="emailHelp" class="form-text text-muted">New user? <a href="{{ url_for('register') }}">Sing Up</a></small>
+        <div>
+            <small class="form-text text-muted">
+                New user? <a href="{{ url_for('register') }}">Sing Up</a>
+                <span id="password-reset">Forgot Password? <a href="{{ url_for('reset_password_request') }}">Click to Reset Password</a></span>
+            </small>
+        </div>
     </div>
     
 </form>
