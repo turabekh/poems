@@ -12,7 +12,7 @@
             <a href="{{ url_for('user', username=poem.author.username) }}">
                 {{ poem.author.username }}
             </a>
-            says:
+            says: {{ moment(poem.created_at).fromNow() }}:
             <p class="article-content"> {{ poem.body }} </p>
         </td>
     </tr>
