@@ -10,11 +10,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User
 from app.auth.email import send_password_reset_email
 
-@bp.before_request
-def before_request():
-    if current_user.is_authenticated:
-        current_user.last_seen = datetime.utcnow()
-        db.session.commit()
+
 
 
 @bp.route('/login', methods=['GET', 'POST'])

@@ -17,4 +17,4 @@ class Config(object):
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     ADMINS = ['turabekh@gmail.com']
     POEMS_PER_PAGE = 3
-    LANGUAGES = ['en', 'ru']
+    ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL')
