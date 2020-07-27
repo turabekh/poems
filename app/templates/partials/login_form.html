@@ -1,34 +1,51 @@
-<form action="" method="post" novalidate>
+<form class="box"  action="" method="post">
     {{ form.hidden_tag() }}
-    <div class="form-group">
-        {{ form.username.label }}
-        {{ form.username(class_="form-control") }}
+    <h2 class="has-text-centered title">Sign In</h2>
+    <div class="field">
+        {{ form.username.label(class_="label") }}
+        <p class="control has-icons-left has-icons-right">
+        {{ form.username(class_="input") }}
+        <span class="icon is-small is-left">
+            <i class="fas fa-user"></i>
+        </span>
         {% for error in form.username.errors %}
-        <small class="form-text text-danger">[{{ error }}]</small>
+        <p class="help is-danger">[{{ error }}]</p>
         {% endfor %}
+        </p>
     </div>
-    <div class="form-group">
-        {{ form.password.label }}
-        {{ form.password(class_="form-control") }}
+    <div class="field">
+        {{ form.password.label(class_="label") }}
+        <p class="control has-icons-left has-icons-right">
+        {{ form.password(class_="input") }}
+        <span class="icon is-small is-left">
+            <i class="fas fa-lock"></i>
+        </span>
         {% for error in form.password.errors %}
-        <small class="form-text text-danger">[{{ error }}]</small>
+        <p class="help is-danger">[{{ error }}]</p>
         {% endfor %}
+        </p>
     </div>
-    <div class="form-group form-check">
-        {{ form.remember_me(class_="form-check-input") }}
-        {% for error in form.remember_me.errors %}
-        <small class="form-text text-danger">[{{ error }}]</small>
-        {% endfor %}
-      <label class="form-check-label" for="exampleCheck1">Remember Me</label>
-    </div>
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary form-control">Submit</button>
-        <div>
-            <small class="form-text text-muted">
-                New user? <a href="{{ url_for('auth.register') }}">Sing Up</a>
-                <span id="password-reset">Forgot Password? <a href="{{ url_for('auth.reset_password_request') }}">Click to Reset Password</a></span>
-            </small>
+    <div class="field">
+        <div class="control">
+          <label class="checkbox">
+            {{ form.remember_me() }}
+            {{ form.remember_me.label }}
+          </label>
         </div>
+      </div>
+    <div class="field">
+        <p class="control">
+          <button class="button is-success is-fullwidth">
+            Login
+          </button>
+        </p>
+        <p class="content mt-2 mb-5 pb-4 is-grey is-hidden-mobile">
+            <span class="is-pulled-left">Don't have account yet? <a class="ml-2" href="{{ url_for('auth.register') }}">Sign Up</a></span>
+            <span class="is-pulled-right">Forgot Password? <a class="ml-2" href="{{ url_for('auth.reset_password_request') }}">Reset</a></span>
+        </p>
+        <p class="mt-2 mb-5 pb-4 is-grey is-hidden-tablet">
+            <small class="helper">Don't have account yet? <a class="ml-2" href="{{ url_for('auth.register') }}">Sign Up</a></small><br>
+            <small class="helper">Forgot Password? <a class="ml-2" href="{{ url_for('auth.reset_password_request') }}">Reset</a></small>
+        </p>
     </div>
-    
 </form>

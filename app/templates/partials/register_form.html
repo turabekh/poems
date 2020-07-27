@@ -1,35 +1,62 @@
-<form action="" method="post" novalidate>
+<form class="box"  action="" method="post">
     {{ form.hidden_tag() }}
-    <div class="form-group">
-        {{ form.username.label }}
-        {{ form.username(class_="form-control") }}
+    <h2 class="has-text-centered title">Sign Up</h2>
+    <div class="field">
+        {{ form.username.label(class_="label") }}
+        <p class="control has-icons-left has-icons-right">
+        {{ form.username(class_="input") }}
+        <span class="icon is-small is-left">
+            <i class="fas fa-user"></i>
+        </span>
         {% for error in form.username.errors %}
-        <small class="form-text text-danger">[{{ error }}]</small>
+        <p class="help is-danger">[{{ error }}]</p>
         {% endfor %}
+        </p>
     </div>
-    <div class="form-group">
-        {{ form.email.label }}
-        {{ form.email(class_="form-control") }}
+    <div class="field">
+        {{ form.email.label(class_="label") }}
+        <p class="control has-icons-left has-icons-right">
+        {{ form.email(class_="input") }}
+        <span class="icon is-small is-left">
+            <i class="fas fa-envelope"></i>
+        </span>
         {% for error in form.email.errors %}
-        <small class="form-text text-danger">[{{ error }}]</small>
+        <p class="help is-danger">[{{ error }}]</p>
         {% endfor %}
+        </p>
     </div>
-    <div class="form-group">
-        {{ form.password.label }}
-        {{ form.password(class_="form-control") }}
+    <div class="field">
+        {{ form.password.label(class_="label") }}
+        <p class="control has-icons-left has-icons-right">
+        {{ form.password(class_="input") }}
+        <span class="icon is-small is-left">
+            <i class="fas fa-lock"></i>
+        </span>
         {% for error in form.password.errors %}
-        <small class="form-text text-danger">[{{ error }}]</small>
+        <p class="help is-danger">[{{ error }}]</p>
         {% endfor %}
+        </p>
     </div>
-    <div class="form-group">
-        {{ form.password2.label }}
-        {{ form.password2(class_="form-control") }}
+    <div class="field">
+        {{ form.password2.label(class_="label") }}
+        <p class="control has-icons-left has-icons-right">
+        {{ form.password2(class_="input") }}
+        <span class="icon is-small is-left">
+            <i class="fas fa-lock"></i>
+        </span>
         {% for error in form.password2.errors %}
-        <small class="form-text text-danger">[{{ error }}]</small>
+        <p class="help is-danger">[{{ error }}]</p>
         {% endfor %}
+        </p>
     </div>
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary form-control">Submit</button>
-        <small id="emailHelp" class="form-text text-muted">Already have an account? <a href="{{ url_for('auth.login') }}">Sing In</a></small>
+    <div class="field">
+        <p class="control">
+          <button class="button is-success is-fullwidth">
+            Sign Up
+          </button>
+        </p>
+        <p class="mt-2 mb-5 pb-4 is-grey">
+            <small class="helper">Already have an account? <a class="ml-2" href="{{ url_for('auth.login') }}">Sign In</a></small>
+        </p>
     </div>
 </form>

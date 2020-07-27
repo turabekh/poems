@@ -1,19 +1,82 @@
-<table>
-    <tr valign="top">
-        <td>
-            {% if poem.author.image_file %} 
-                <img src="{{ url_for('static', filename='profile_pics/' + poem.author.image_file)  }}"class="img-thumbnail" style="width: 40px; height: 40px;">    
-            {% else %}
-            <img src="{{ poem.author.avatar(46) }}"class="img-thumbnail" style="width: 40px; height: 40px;"> 
-            {% endif %}
-            
-        </td>
-        <td>
-            <a href="{{ url_for('users.user', username=poem.author.username) }}">
-                {{ poem.author.username }}
+<section class="mt-5">
+  <div class="box">
+      <article class="media mb-5">
+        <div class="media-left">
+          <figure class="image is-64x64 is-square">
+              {% if poem.author.image_file %} 
+                  <img class="is-rounded has-ratio" src="{{ url_for('static', filename='profile_pics/' + poem.author.image_file)  }}" alt="Image">
+              {% else %}
+                  <img class="is-rounded" src="{{ poem.author.avatar(64) }}" alt="Image">
+              {% endif %}
+          </figure>
+        </div>
+        <div class="media-content">
+            <p>
+              <strong>
+                  <a href="{{ url_for('users.user', username=poem.author.username) }}">
+                      {{ poem.author.username }}
+                  </a>
+              </strong><br>
+              <small>{{ moment(poem.created_at).fromNow() }}</small>
+            </p>
+          </div>
+      </article>
+      <hr>
+      <div class="content">
+        <p class="is-size-5 short-text" style="white-space: pre-line;">
+          {{ poem.body | truncate(255, False, end="...") }}
+          {% if poem.body | length() > 255 %}
+          <a onclick="toggleText(event)" class="m-0 p-0">Read More</a>
+          {% endif %}
+        </p>
+          <p class="is-size-5 full-text" style="white-space: pre-line;">
+            {{ poem.body }} 
+            <a onclick="toggleText(event)" class="readMore">Read less</a>
+          </p>
+      </div>
+      <hr>
+      <nav class="level px-5 is-mobile">
+          <div class="level-left">
+            <a class="level-item" aria-label="reply">
+              <span class="icon is-small">
+                <i class="fas fa-reply" aria-hidden="true"></i>
+              </span>
             </a>
-            says: {{ moment(poem.created_at).fromNow() }}:
-            <p class="article-content"> {{ poem.body }} </p>
-        </td>
-    </tr>
-</table>
+            <a class="level-item" aria-label="retweet">
+              <span class="icon is-small">
+                <i class="fas fa-retweet" aria-hidden="true"></i>
+              </span>
+            </a>
+            <a class="level-item" aria-label="like">
+              <span class="icon is-small">
+                <i class="fas fa-heart" aria-hidden="true"></i>
+              </span>
+            </a>
+          </div>
+        </nav>
+        <hr>
+
+        {% if current_user.is_authenticated %}
+        <article class="media">
+          <div class="media-left">
+            <figure class="image is-32x32 is-square">
+                {% if current_user.image_file %} 
+                    <img src="{{ url_for('static', filename='profile_pics/' + current_user.image_file) }}" class="is-rounded" alt="Image">
+                {% else %}
+                    <img src="{{ current_user.avatar(32) }}" class="is-rounded" alt="Image">
+                {% endif %}
+            </figure>
+          </div>
+          <div class="media-content">
+            <div class="content">
+              <div class="field">
+                <div class="control">
+                  {% include 'partials/comment_form.html' %}
+                </div>
+              </div>
+            </div>
+          </div>
+          </article>
+    {% endif %}
+  </div>
+</section>

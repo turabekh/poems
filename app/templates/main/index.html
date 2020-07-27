@@ -1,21 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="row">
-        <div class="col">
-            <h1>Hi, {{ current_user.username }}!</h1>
-            {% if g.search_form %}
-                {% include "partials/search_form.html" %}
-            {% endif %}
-            {% for poem in poems %}
-                {% include "partials/poem.html" %}
-            {% endfor %}
-            {% if prev_url %}
-            <a href="{{ prev_url }}">Newer poems</a>
-            {% endif %}
-            {% if next_url %}
-            <a href="{{ next_url }}">Older poems</a>
-            {% endif %}
-        </div>
-    </div>
+    {% include 'partials/search_form.html' %}
+
+    {% for poem in poems %}
+        {% include "partials/poem.html" %}
+    {% endfor %}
+
+    {% include 'partials/pagination.html' %}
+    
 {% endblock %}
