@@ -42,7 +42,7 @@ def create_app(config_class=Config):
     app.register_blueprint(auth_bp, url_prefix='/auth')
 
     from app.users import bp as users_bp
-    app.register_blueprint(users_bp, url_prefix='/users')
+    app.register_blueprint(users_bp)
 
     from app.poems import bp as poems_bp
     app.register_blueprint(poems_bp, url_prefix='/poems')
@@ -74,5 +74,7 @@ def create_app(config_class=Config):
                 app.logger.setLevel(logging.INFO)
                 app.logger.info('Microblog startup')
     return app
+
+from app import models
 
 

@@ -20,8 +20,12 @@
         <main class="section">
             <div class="container">
                 <div class="columns">
-                    <div class="column"></div>
-                    <div class="column is-three-quarters">
+                    <div class="column">
+                        {% block dashboard_menu %}
+
+                        {% endblock %}
+                    </div>
+                    <div class="column is-two-thirds">
                         <section>
                             <div class="mb-5">
                                 {% with messages = get_flashed_messages(with_categories=true) %}
@@ -39,9 +43,11 @@
                         </section>
                     {% block content %}{% endblock %}
                     </div>
-                    <div class="column section is-hidden-mobile">
-                        {% include "partials/aside.html" %}
-                    </div>
+                    {% block side_menu %}
+                        <div class="column section is-hidden-mobile">
+                            {% include "partials/aside.html" %}
+                        </div>
+                    {% endblock %}
                 </div>
             </div>
         </main>

@@ -63,6 +63,7 @@ class User(UserMixin, db.Model):
     image_file = db.Column(db.String(120), nullable=True)
     password_hash = db.Column(db.String(128))
     about_me = db.Column(db.String(140))
+    is_admin = db.Column(db.Boolean, default=False)
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
     poems = db.relationship('Poem', backref='author', lazy='dynamic')
 
@@ -129,13 +130,36 @@ class Category(db.Model):
     def __repr__(self):
         return f"<Category>: {self.name}"
 
+
+user_likes = db.Table('user_likes',
+    db.Column('poem_id', db.Integer, db.ForeignKey('poem.id')),
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id'))
+)
+
 class Poem(SearchableMixin, db.Model):
     __searchable__ = ["body",]
     id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(200))
     body = db.Column(db.String(140))
     created_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     category_id = db.Column(db.Integer, db.ForeignKey("category.id"))
+
+    liked = db.relationship(
+        'User', secondary = lambda: user_likes, backref="likes")
+    
+    def already_liked(self, user):
+        return user in self.liked
+    
+    def like(self, user):
+        if not self.already_liked(user):
+            self.liked.append(user) 
+        
+    def unlike(self, user):
+        if self.already_liked(user):
+            self.liked.remove(user) 
+    def get_liked_users(self):
+        return [u.username for u in self.liked]
 
     def __repr__(self):
         return '<Poem {}>'.format(self.id)

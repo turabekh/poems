@@ -27,14 +27,17 @@ def save_picture(form_picture):
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
+    image_file = None
+    if user.image_file:
+        image_file = url_for('static', filename='profile_pics/' + user.image_file)
+    
+    if user == current_user:
+        return render_template("users/dashboard.html")
     poems = [
         {'author': user, 'body': 'Test post #1'},
         {'author': user, 'body': 'Test post #2'}
     ]
-    if current_user.image_file:
-        image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
-    else:
-        image_file = None
+    
     form = EmptyForm()
     return render_template('users/user.html', user=user, poems=poems, image_file=image_file, form=form)
 
