@@ -66,6 +66,8 @@ class User(UserMixin, db.Model):
     is_admin = db.Column(db.Boolean, default=False)
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
     poems = db.relationship('Poem', backref='author', lazy='dynamic')
+    sent_messages = db.relationship('Message', backref='sent_user', lazy=True, foreign_keys='Message.sent_user_id')
+    received_messages = db.relationship('Message', backref='received_user', lazy=True, foreign_keys='Message.received_user_id')
 
     followed = db.relationship(
         'User', secondary=followers,
@@ -165,8 +167,16 @@ class Poem(SearchableMixin, db.Model):
         return '<Poem {}>'.format(self.id)
 
 
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.String(140))
+    is_read = db.Column(db.Boolean, default=False)
+    create_at = db.Column(db.DateTime, default=datetime.utcnow)
+    sent_user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    received_user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
-
+    def __repr__(self):
+        return f"<Message>: {self.id}"
 
 @login.user_loader
 def load_user(id):
