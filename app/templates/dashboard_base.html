@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block dashboard_menu %}
+    {% include "partials/left_nav.html" %}
+{% endblock %}
+{% block content %}
+    <section>
+        {% include "partials/user_profile.html" %}
+    </section>
+    {% block dashboard %}
+
+    {% endblock dashboard %}
+    
+{% endblock content %}

@@ -118,6 +118,8 @@ class User(UserMixin, db.Model):
         except:
             return
         return User.query.get(id)
+    def new_inbox_messages(self):
+        return len([m for m in self.received_messages if m.is_read == False])
 
     def __repr__(self):
         return '<User {}>'.format(self.username)    
@@ -162,6 +164,7 @@ class Poem(SearchableMixin, db.Model):
             self.liked.remove(user) 
     def get_liked_users(self):
         return [u.username for u in self.liked]
+    
 
     def __repr__(self):
         return '<Poem {}>'.format(self.id)

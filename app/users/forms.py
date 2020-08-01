@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField
+from wtforms import StringField, SubmitField, TextAreaField, SelectField
 from flask_wtf.file import FileField, FileAllowed
 from wtforms.validators import ValidationError, DataRequired, Email, Length
 from app.models import User
@@ -27,4 +27,11 @@ class EditProfileForm(FlaskForm):
 
 
 class EmptyForm(FlaskForm):
+    submit = SubmitField('Submit')
+
+
+class MessageForm(FlaskForm):
+    user = SelectField("Users", validators=[DataRequired()], coerce=int)
+    subject = StringField('Subject')
+    content = TextAreaField('Content', validators=[DataRequired()])
     submit = SubmitField('Submit')

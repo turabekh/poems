@@ -4,9 +4,9 @@ from PIL import Image
 from flask import render_template, flash, redirect, url_for, request, current_app
 from app import db
 from app.users import bp
-from app.users.forms import EditProfileForm, EmptyForm
+from app.users.forms import EditProfileForm, EmptyForm, MessageForm
 from flask_login import current_user, login_required
-from app.models import User, Poem, Category
+from app.models import User, Poem, Category, Message
 
 
 def save_picture(form_picture):
@@ -31,8 +31,6 @@ def user(username):
     if user.image_file:
         image_file = url_for('static', filename='profile_pics/' + user.image_file)
     
-    if user == current_user:
-        return render_template("users/dashboard.html")
     poems = [
         {'author': user, 'body': 'Test post #1'},
         {'author': user, 'body': 'Test post #2'}
@@ -42,11 +40,15 @@ def user(username):
     return render_template('users/user.html', user=user, poems=poems, image_file=image_file, form=form)
 
 
-@bp.route('/edit_profile', methods=['GET', 'POST'])
+@bp.route('/<username>/dashboard', methods=['GET', 'POST'])
 @login_required
-def edit_profile():
+def dashboard(username):
     form = EditProfileForm()
+    user = User.query.filter_by(username=username).first()
+    if user != current_user:
+        return redirect(url_for("main.index"))
     if form.validate_on_submit():
+        print(form.picture)
         if form.picture.data:
             picture_file = save_picture(form.picture.data)
             current_user.image_file = picture_file
@@ -55,12 +57,15 @@ def edit_profile():
         current_user.about_me = form.about_me.data
         db.session.commit()
         flash('Your account has been updated', 'success')
-        return redirect(url_for('users.edit_profile'))
+        return redirect(url_for('users.dashboard'))
     elif request.method == 'GET':
+        image_file = None
+        if current_user.image_file:
+            image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
         form.username.data = current_user.username
         form.email.data = current_user.email
         form.about_me.data = current_user.about_me
-    return render_template('users/edit_profile.html', form=form) 
+    return render_template('users/dashboard.html', form=form, image_file=image_file) 
 
 
 
@@ -102,3 +107,42 @@ def unfollow(username):
         return redirect(url_for('users.user', username=username))
     else:
         return redirect(url_for('main.index'))
+
+
+@bp.route("/<username>/inbox")
+def inbox(username):
+    user = User.query.filter_by(username=username).first()
+    if user == current_user:
+        messages = current_user.received_messages
+        return render_template("users/inbox.html", messages = messages)
+    return redirect(url_for("main.index"))
+
+
+@bp.route("/<username>/outbox")
+def outbox(username):
+    user = User.query.filter_by(username=username).first()
+    if user == current_user:
+        messages = current_user.sent_messages
+        return render_template("users/outbox.html", messages = messages)
+    return redirect(url_for("main.index"))
+
+@bp.route("/<username>/message", methods=["GET", "POST"])
+def send_message(username):
+    user = User.query.filter_by(username=username).first()
+    users = [(u.id, u.username) for u in user.followed.union(user.followers).all()]
+    if user != current_user:
+        return redirect(url_for("main.index"))
+    form = MessageForm()
+    form.user.choices = users
+    if form.validate_on_submit():
+        sent_user_id = current_user.id 
+        received_user_id = form.user.data 
+        subject = form.subject.data 
+        content = form.content.data 
+        message = Message(body=content, sent_user_id=sent_user_id, received_user_id=received_user_id)
+        db.session.add(message)
+        db.session.commit()
+        flash(f"Your message has been sent", "success")
+        return redirect(url_for("users.outbox", username=current_user.username))
+    else:
+        return render_template("users/send_message.html", form=form)

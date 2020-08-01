@@ -3,22 +3,35 @@
       Main
     </p>
     <ul class="menu-list">
-      <li><a>Dashboard</a></li>
-      <li><a>Messages</a></li>
+      <li><a href="{{url_for('users.dashboard', username=current_user.username) }}">Dashboard</a></li>
+    </ul>
+    <p class="menu-label">
+      Messages
+    </p>
+    <ul class="menu-list">
+      <li>
+        <a href="{{ url_for('users.inbox', username=current_user.username)}}">Inbox 
+          {% if current_user.new_inbox_messages() > 0 %} 
+          <span class="tag is-rounded is-primary is-normal">4</span>
+          {% endif %}
+        </a>
+      </li>          
+      <li><a href="{{ url_for('users.outbox', username=current_user.username)}}">Sent</a></li>
+      <li><a href="{{ url_for('users.send_message', username=current_user.username)}}">Send Message</a></li>
     </ul>
     <p class="menu-label">
         Categories
       </p>
       <ul class="menu-list">
         <li><a>Create Category</a></li>
-        <li><a>Update Category</a></li>
+        <li><a>All Categories</a></li>
       </ul>
     <p class="menu-label">
       Poems
     </p>
     <ul class="menu-list">
       <li><a>Create Poem</a></li>
-      <li><a>Update Poem</a></li>
+      <li><a>All Poems</a></li>
       <li><a>Manage Comments</a></li>
     </ul>
     <p class="menu-label">
