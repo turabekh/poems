@@ -1,0 +1,14 @@
+<section class="section">
+    <nav class="pagination is-rounded is-centered" role="navigation" aria-label="pagination">
+        {% if prev_url %}
+        <a class="pagination-previous has-background-primary has-text-white" href="{{ prev_url }}">
+            Previous
+        </a>
+        {% endif %}
+        {% if next_url %}
+            <a class="pagination-next has-background-primary has-text-white" href="{{ next_url }}">
+                Next page
+            </a>
+        {% endif %}
+    </nav>
+</section>

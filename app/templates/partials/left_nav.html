@@ -10,9 +10,9 @@
     </p>
     <ul class="menu-list">
       <li>
-        <a href="{{ url_for('users.inbox', username=current_user.username)}}">Inbox 
+        <a href="{{ url_for('users.inbox', username=current_user.username)}}"class="tags has-addons">Inbox 
           {% if current_user.new_inbox_messages() > 0 %} 
-          <span class="tag is-rounded is-primary is-normal">4</span>
+          <span class="ml-5 tag is-info">{{ current_user.new_inbox_messages() }}</span>
           {% endif %}
         </a>
       </li>          
@@ -23,15 +23,19 @@
         Categories
       </p>
       <ul class="menu-list">
-        <li><a>Create Category</a></li>
-        <li><a>All Categories</a></li>
+        <li><a href="{{ url_for('poems.create_category')}}" >Create Category</a></li>
+        <li><a href="{{ url_for('poems.category_list') }}">All Categories</a></li>
       </ul>
     <p class="menu-label">
       Poems
     </p>
     <ul class="menu-list">
-      <li><a>Create Poem</a></li>
-      <li><a>All Poems</a></li>
+      <li>
+        <a href="{{ url_for('poems.create_poem') }}">Create Poem</a>
+      </li>
+      <li>
+        <a href="{{ url_for('poems.poem_list') }}">All Poems</a>
+      </li>
       <li><a>Manage Comments</a></li>
     </ul>
     <p class="menu-label">

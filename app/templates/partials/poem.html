@@ -1,26 +1,39 @@
-<section class="mt-5">
+<section class="mt-5" style="overflow: hidden;">
   <div class="box">
       <article class="media mb-5">
         <div class="media-left">
           <figure class="image is-64x64 is-square">
-              {% if poem.author.image_file %} 
-                  <img class="is-rounded has-ratio" src="{{ url_for('static', filename='profile_pics/' + poem.author.image_file)  }}" alt="Image">
-              {% else %}
-                  <img class="is-rounded" src="{{ poem.author.avatar(64) }}" alt="Image">
-              {% endif %}
+            <a href="{{ url_for('users.user', username=poem.author.username) }}">
+              <img class="is-rounded has-ratio" src="{{ url_for('static', filename='profile_pics/' + poem.author.image_file)  }}" alt="Image">
+            </a>
           </figure>
         </div>
         <div class="media-content">
-            <p>
-              <strong>
-                  <a href="{{ url_for('users.user', username=poem.author.username) }}">
-                      {{ poem.author.username }}
-                  </a>
-              </strong><br>
-              <small>{{ moment(poem.created_at).fromNow() }}</small>
-            </p>
+          <strong>
+            <a href="{{ url_for('users.user', username=poem.author.username) }}" class="title is-4">
+                {{ poem.author.username }}
+            </a>
+        </strong>
+        <small class="content">{{ moment(poem.created_at).fromNow() }}</small>
+          <div class="control">
+            <div class="tags has-addons">
+              <span class="tag is-dark"><i class="fa fa-envelope" aria-hidden="true"></i></span>
+              <span class="tag is-info"><a href="" class="has-text-white">Contact Me</a></span>
+            </div>
           </div>
+          <p class="subtitle is-5">
+            {{ poem.title}} - <span class="tag is-primary">{{ poem.category.name}}</span>
+          </p>
+        </div>
       </article>
+      {% if poem.audio %}
+      <div class="control">
+        <div class="tags has-addons is-pulled-right">
+          <span class="tag is-dark"><i class="fa fa-headphones" aria-hidden="true"></i></span>
+          <span class="tag is-info"><a href="" class="has-text-white">Listen Poem</a></span>
+        </div>
+      </div>
+      {% endif %}
       <hr>
       <div class="content">
         <p class="is-size-5 short-text" style="white-space: pre-line;">
@@ -60,11 +73,7 @@
         <article class="media">
           <div class="media-left">
             <figure class="image is-32x32 is-square">
-                {% if current_user.image_file %} 
-                    <img src="{{ url_for('static', filename='profile_pics/' + current_user.image_file) }}" class="is-rounded" alt="Image">
-                {% else %}
-                    <img src="{{ current_user.avatar(32) }}" class="is-rounded" alt="Image">
-                {% endif %}
+              <img src="{{ url_for('static', filename='profile_pics/' + current_user.image_file) }}" class="is-rounded" alt="Image">
             </figure>
           </div>
           <div class="media-content">

@@ -1,9 +1,6 @@
-<article class="message is-info">
-    <div class="message-header">
-      <p>To: {{ message.received_user.username }}</p>
-      <button class="delete" aria-label="delete"></button>
-    </div>
-    <div class="message-body">
-      {{ message.body }}
-    </div>
-</article>
+<section class="box mb-5">
+  <div class="content">
+    <p class="subtitle is-6"><strong>To:</strong> {{ message.received_user.username}} on {{ moment(message.create_at).format('LLL') }} </p>
+    <blockquote>Ut venenatis, nisl scelerisque sollicitudin fermentum, quam libero hendrerit ipsum, ut blandit est tellus sit amet turpis.</blockquote>
+  </div>
+</section>

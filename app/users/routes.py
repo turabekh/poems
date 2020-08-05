@@ -15,7 +15,7 @@ def save_picture(form_picture):
     picture_fn = random_hex + f_ext
     picture_path = os.path.join(current_app.root_path, 'static/profile_pics', picture_fn)
 
-    output_size = (125, 125)
+    output_size = (250, 250)
     i = Image.open(form_picture)
     i.thumbnail(output_size)
     i.save(picture_path)
@@ -57,7 +57,7 @@ def dashboard(username):
         current_user.about_me = form.about_me.data
         db.session.commit()
         flash('Your account has been updated', 'success')
-        return redirect(url_for('users.dashboard'))
+        return redirect(url_for('users.dashboard', username=current_user.username))
     elif request.method == 'GET':
         image_file = None
         if current_user.image_file:

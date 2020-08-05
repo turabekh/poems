@@ -1,0 +1,18 @@
+<article class="media">
+    <div class="media-left">
+      <figure class="image is-32x32 is-square">
+            <img src="{{ url_for('static', filename='profile_pics/' + current_user.image_file) }}" class="is-rounded" alt="Image">
+      </figure>
+    </div>
+    <div class="media-content">
+      <div class="content">
+        <div class="field">
+          <div class="control">
+              <form action="" method="post">
+                {{ comment_form.body(class_="input is-small", placeholder="write a comment") }}
+              </form>
+          </div>
+        </div>
+      </div>
+    </div>
+</article>

@@ -1,0 +1,31 @@
+<div class="navbar-start is-hidden-desktop">
+    <a class="navbar-item" href="{{ url_for('main.index') }}">
+      Home
+    </a> 
+    <a class="navbar-item" href="{{ url_for('main.about')}}">
+      About Us
+    </a> 
+    <a class="navbar-item" href="{{ url_for('main.contact_us')}}">
+      Contact Admins
+    </a>  
+    {% if current_user.is_authenticated %}    
+      <a class="navbar-item" href="{{url_for('users.dashboard', username=current_user.username) }}">
+        My Account
+      </a>
+      <a class="navbar-item" href="{{ url_for('users.send_message', username=current_user.username)}}">Send Message</a></li>
+      <a class="navbar-item" href="{{ url_for('users.inbox', username=current_user.username)}}"class="tags has-addons">Inbox 
+        {% if current_user.new_inbox_messages() > 0 %} 
+        <span class="ml-5 tag is-info">{{ current_user.new_inbox_messages()}}</span>
+        {% endif %}
+      </a>
+      <a class="navbar-item" href="{{ url_for('users.outbox', username=current_user.username)}}">Sent</a></li>
+        {% if current_user.is_admin %}
+          <a class="navbar-item" href="{{ url_for('poems.create_category')}}" >Create Category</a>
+          <a class="navbar-item" href="{{ url_for('poems.category_list') }}">All Categories</a>
+        {% endif %}
+        <a class="navbar-item" href="{{ url_for('poems.create_poem') }}">Create Poem</a>
+        <a class="navbar-item" href="{{ url_for('poems.poem_list') }}">All Poems</a>
+        <a class="navbar-item" >Followers</a>
+        <a class="navbar-item" >Following</a>
+      {% endif %}
+ </div>

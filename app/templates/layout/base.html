@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html style="background-color: #dae2e6;">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% if title %}
+        <title>{{ title }} - Poems</title>
+        {% else %}
+        <title>Welcome to Poems</title>
+        {% endif %}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" >
+        <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    </head>
+    <body>
+        <header>
+            {% include "layout/nav.html" %}
+        </header>
+
+        <main class="section" style="min-height: calc(100vh - 70px);">
+            <div class="container">
+                <div class="columns">
+                    <div class="column">
+                        {% include "layout/left_side_menu.html" %}
+                    </div>
+
+                    <div class="column is-three-fifths">
+                        {% include "layout/flash.html" %}
+                    {% block content %}{% endblock %}
+                    </div>
+
+                    {% block side_menu %}
+                        <div class="column is-hidden-mobile">
+                            {% include "layout/right_side_menu.html" %}
+                        </div>
+                    {% endblock %}
+                </div>
+            </div>
+        </main>
+
+
+        {% include "layout/footer.html" %}
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        {{ moment.include_moment() }}
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    </body>
+</html>

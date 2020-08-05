@@ -1,12 +1,20 @@
-{% extends "base.html" %}
+{% extends "layout/base.html" %}
 
 {% block content %}
-    {% include 'partials/search_form.html' %}
+    {% include 'forms/searchs/search_poem_form.html' %}
+    {% if poems|length < 1 %}
+        <article class="message is-info box mt-5">
+            <div class="message-body">
+            <strong>No results found</strong>
+            </div>
+        </article>
+    {% else %}
+        {% for poem in poems %}
+            {% include "partial/poem.html" %}
+        {% endfor %}
+    {% endif %}
 
-    {% for poem in poems %}
-        {% include "partials/poem.html" %}
-    {% endfor %}
 
-    {% include 'partials/pagination.html' %}
+    {% include 'partial/pagination.html' %}
     
 {% endblock %}

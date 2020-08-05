@@ -1,0 +1,42 @@
+{% extends "dashboard_base.html" %}
+
+{% block dashboard %}
+<section class="mt-3 pt-4 table-container">
+    <table class="table is-fullwidth">
+        <thead>
+            <tr>
+              <th>#</th>
+              <th>Poem Title</th>
+              <th>Update</th>
+              <th>Delete</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+              <th>#</th>
+              <th>Poem Title</th>
+              <th>Update</th>
+              <th>Delete</th>
+            </tr>
+        </tfoot>
+        <tbody>
+            {% for poem in poems %}
+            <tr>
+                <th>{{loop.index}}</th>
+                <td>{{poem.title}}</td>
+                <td>
+                    <button class="button is-small is-primary">
+                        <a href="{{ url_for('poems.update_poem', id=poem.id) }}">Update</a>
+                    </button>
+                </td>
+                <td>
+                    <button class="button is-small is-danger">
+                        <a href="{{ url_for('poems.delete_poem', id=poem.id) }}">Delete</a>
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock dashboard %}

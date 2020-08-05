@@ -1,0 +1,57 @@
+<aside class="menu box is-hidden-mobile">
+    <p class="menu-label">General</p>
+    <ul class="menu-list">
+      <li><a href="{{ url_for('main.about')}}">About Us</a></li>
+      <li><a href="{{ url_for('main.contact_us')}}">Contact Admins</a></li>
+    </ul>
+    {% if current_user.is_authenticated %}
+      <p class="menu-label">
+        Dashboard
+      </p>
+      <ul class="menu-list">
+        <li><a href="{{url_for('users.dashboard', username=current_user.username) }}">My Account</a></li>
+      </ul>
+      <p class="menu-label">
+        Messages
+      </p>
+      <ul class="menu-list">
+        <li>
+          <a href="{{ url_for('users.inbox', username=current_user.username)}}"class="tags has-addons">Inbox 
+            {% if current_user.new_inbox_messages() > 0 %} 
+            <span class="ml-5 tag is-info"> {{ current_user.new_inbox_messages() }}</span>
+            {% endif %}
+          </a>
+        </li>          
+        <li><a href="{{ url_for('users.outbox', username=current_user.username)}}">Sent</a></li>
+        <li><a href="{{ url_for('users.send_message', username=current_user.username)}}">New Message</a></li>
+      </ul>
+      {% if current_user.is_admin %}
+        <p class="menu-label">
+          Categories
+        </p>
+        <ul class="menu-list">
+          <li><a href="{{ url_for('poems.create_category')}}" >Create Category</a></li>
+          <li><a href="{{ url_for('poems.category_list') }}">All Categories</a></li>
+        </ul>
+      {% endif %}
+      <p class="menu-label">
+        Poems
+      </p>
+      <ul class="menu-list">
+        <li>
+          <a href="{{ url_for('poems.create_poem') }}">Create Poem</a>
+        </li>
+        <li>
+          <a href="{{ url_for('poems.poem_list') }}">All Poems</a>
+        </li>
+        <li><a>Manage Comments</a></li>
+      </ul>
+      <p class="menu-label">
+        Users
+      </p>
+      <ul class="menu-list">
+        <li><a>Followers</a></li>
+        <li><a>Following</a></li>
+      </ul>
+    {% endif %}
+</aside>

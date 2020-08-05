@@ -1,21 +1,40 @@
-<form action="" method="post">
+<form class="box"  action="" method="post">
     {{ form.hidden_tag() }}
-    <div class="form-group">
-        {{ form.category.label }}
-        {{ form.category(class_="form-control") }}
-        {% for error in form.category.errors %}
-        <small class="form-text text-danger">[{{ error }}]</small>
-        {% endfor %}
+    <h2 class="has-text-centered title">{{title}} Category</h2>
+    <div class="field">
+      {{ form.category.label(class_="label")}}
+      <div class="control">
+        <div class="select is-primary is-fullwidth">
+            {{ form.category() }}
+        </div>
       </div>
-    <div class="form-group">
-        {{ form.poem.label }}
-        {{ form.poem(class_="form-control", rows=20) }}
-        {% for error in form.poem.errors %}
-        <small class="form-text text-danger">[{{ error }}]</small>
-        {% endfor %}
+      {% for error in form.category.errors %}
+      <p class="help is-danger">[{{ error }}]</p>
+      {% endfor %}
     </div>
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary form-control">Submit</button>
+    <div class="field">
+      {{ form.title.label(class_="label") }}
+      <p class="control">
+      {{ form.title(class_="input") }}
+      {% for error in form.title.errors %}
+      <p class="help is-danger">[{{ error }}]</p>
+      {% endfor %}
+      </p>
     </div>
-    
-</form>
+    <div class="field">
+      {{ form.body.label(class_="label") }}
+      <div class="control">
+          {{ form.body(class_="textarea is-primary") }} 
+      </div>
+      {% for error in form.body.errors %}
+      <p class="help is-danger">[{{ error }}]</p>
+      {% endfor %}
+    </div>
+    <div class="field">
+        <p class="control">
+          <button class="button is-success is-fullwidth">
+            {{title}}
+          </button>
+        </p>
+    </div>
+  </form>

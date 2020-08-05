@@ -7,7 +7,8 @@ from flask_login import current_user
 
 class PoemForm(FlaskForm):
     category = SelectField("Category", coerce=int)
-    poem = TextAreaField('Enter Your Poem', validators=[
+    title = StringField("Title", validators=[DataRequired()])
+    body = TextAreaField('Enter Your Poem', validators=[
         DataRequired()])
     submit = SubmitField('Submit')
 

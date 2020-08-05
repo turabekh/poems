@@ -27,3 +27,10 @@ def send_password_reset_email(user):
                                          user=user, token=token),
                html_body=render_template('email/reset_password.html',
                                          user=user, token=token))
+                                        
+def send_message_to_admins(form):
+    print("Sending Email to Admins")
+    send_email(form.subject.data, sender=form.email.data, 
+                    recipients=current_app.config['ADMINS'],
+                    text_body = form.content.data,
+                    html_body= f'<div style="border: 3px solid black; padding: 20px;"><h3>From: {form.name.data}</h3><hr><p>{form.content.data}</p></div>')

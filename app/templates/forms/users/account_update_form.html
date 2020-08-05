@@ -1,0 +1,63 @@
+<form class="box"  action="" method="post" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <h2 class="has-text-centered title">Update Account</h2>
+    <div class="field">
+        {{ form.username.label(class_="label") }}
+        <p class="control has-icons-left has-icons-right">
+        {{ form.username(class_="input") }}
+        <span class="icon is-small is-left">
+            <i class="fas fa-user"></i>
+        </span>
+        {% for error in form.username.errors %}
+        <p class="help is-danger">[{{ error }}]</p>
+        {% endfor %}
+        </p>
+    </div>
+    <div class="field">
+        {{ form.email.label(class_="label") }}
+        <p class="control has-icons-left has-icons-right">
+        {{ form.email(class_="input") }}
+        <span class="icon is-small is-left">
+            <i class="fas fa-envelope"></i>
+        </span>
+        {% for error in form.email.errors %}
+        <p class="help is-danger">[{{ error }}]</p>
+        {% endfor %}
+        </p>
+    </div>
+    <div class="field">
+        {{ form.about_me.label(class_="label") }}
+        <div class="control">
+            {{ form.about_me(class_="textarea is-primary") }} 
+        </div>
+        {% for error in form.about_me.errors %}
+        <p class="help is-danger">[{{ error }}]</p>
+        {% endfor %}
+    </div>
+    <div id="file-js-example" class="file has-name field">
+        <label class="file-label">
+            {{ form.picture(class="file-input") }}
+          <span class="file-cta">
+            <span class="file-icon">
+              <i class="fas fa-upload"></i>
+            </span>
+            <span class="file-label">
+                Choose an image
+            </span>
+          </span>
+          <span class="file-name">
+            {{ form.picture.label }}
+          </span>
+        </label>
+    </div>
+    {% for error in form.picture.errors %}
+    <p class="help is-danger">[{{ error }}]</p>
+    {% endfor %}
+    <div class="field">
+        <p class="control">
+          <button class="button is-success is-fullwidth">
+            Update
+          </button>
+        </p>
+    </div>
+</form>
