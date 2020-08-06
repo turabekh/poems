@@ -1,5 +1,12 @@
-<section class="content mt-5">
+<section class="content">
+    {% if messages|length < 1%}
+        <div class="box">
+            <div class="content">
+                <blockquote>No Incoming Messages</blockquote>
+            </div>
+        </div>
+    {% endif %}
     {% for message in messages %}
-        {% include "parital/incoming_message.html" %}
+        {% include "partial/incoming_message.html" %}
     {% endfor %}
 </section>

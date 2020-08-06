@@ -28,13 +28,14 @@
     <div class="field">
         {{ form.about_me.label(class_="label") }}
         <div class="control">
-            {{ form.about_me(class_="textarea is-primary") }} 
+            {{ form.about_me(class_="textarea is-primary", rows=10) }} 
         </div>
         {% for error in form.about_me.errors %}
         <p class="help is-danger">[{{ error }}]</p>
         {% endfor %}
     </div>
-    <div id="file-js-example" class="file has-name field">
+    <div class="field">
+      <div id="file-js-example" class="file has-name is-info field is-fullwidth">
         <label class="file-label">
             {{ form.picture(class="file-input") }}
           <span class="file-cta">
@@ -49,7 +50,9 @@
             {{ form.picture.label }}
           </span>
         </label>
+      </div>
     </div>
+
     {% for error in form.picture.errors %}
     <p class="help is-danger">[{{ error }}]</p>
     {% endfor %}

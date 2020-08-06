@@ -1,6 +1,6 @@
 <section class="box mb-5">
     <div class="content">
-      <p class="subtitle is-6"><strong>From:</strong> {{ message.sent_user.username}} on {{ moment(message.create_at).format('LLL') }} </p>
-      <blockquote>Ut venenatis, nisl scelerisque sollicitudin fermentum, quam libero hendrerit ipsum, ut blandit est tellus sit amet turpis.</blockquote>
+      <p class="subtitle is-6"><strong>From:</strong> <a href="{{url_for('users.user', username=message.sent_user.username)}}" class="link is-size-5 ml-1 mr-3">{{ message.sent_user.username}}</a> on {{ moment(message.create_at).format('LLL') }} </p>
+      <blockquote>{{ message.body }}</blockquote>
     </div>
 </section>

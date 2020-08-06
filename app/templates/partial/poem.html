@@ -1,9 +1,11 @@
 <section class="mt-5" style="overflow: hidden;">
     <div class="box">
-        <article class="media mb-5">
+        <article class="media">
           <div class="media-left">
             <figure class="image is-64x64 is-square">
-              <img class="is-rounded has-ratio" src="{{ url_for('static', filename='profile_pics/' + poem.author.image_file)  }}" alt="Image">
+              <a href="{{ url_for('users.user', username=poem.author.username)}}">
+                <img class="is-rounded has-ratio" src="{{ url_for('static', filename='profile_pics/' + poem.author.image_file)  }}" alt="Image">
+              </a>
             </figure>
           </div>
           <div class="media-content">
@@ -24,23 +26,23 @@
             </p>
           </div>
         </article>
+        <hr class="mb-0">
         {% if poem.audio %}
-        <div class="control">
-          <div class="tags has-addons is-pulled-right">
-            <span class="tag is-dark"><i class="fa fa-headphones" aria-hidden="true"></i></span>
-            <span class="tag is-info"><a href="" class="has-text-white">Listen Poem</a></span>
+          <div class="control mb-2">
+            <div class="tags has-addons is-pulled-right">
+              <span class="tag is-dark"><i class="fa fa-headphones" aria-hidden="true"></i></span>
+              <span class="tag is-info"><a href="" class="has-text-white">Listen Poem</a></span>
+            </div>
           </div>
-        </div>
         {% endif %}
-        <hr>
         <div class="content">
-          <p class="is-size-5 short-text" style="white-space: pre-line;">
+          <p class="is-size-6 short-text" style="white-space: pre-line;">
             {{ poem.body | truncate(255, False, end="...") }}
             {% if poem.body | length() > 255 %}
             <a onclick="toggleText(event)" class="m-0 p-0">Read More</a>
             {% endif %}
           </p>
-            <p class="is-size-5 full-text" style="white-space: pre-line;">
+            <p class="is-size-6-mobile is-size-6-desktop full-text" style="white-space: pre-line;">
               {{ poem.body }} 
               <a onclick="toggleText(event)" class="readMore">Read less</a>
             </p>

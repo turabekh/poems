@@ -1,89 +1,18 @@
-{% extends "base.html" %}
+{% extends "layout/base.html" %}
 
 {% block content %}
-<div class="box">
-    <div class="media">
-        <div class="media-left pt-3 is-hidden-mobile">
-        <figure class="image is-128x128">
-            <img src="{{ image_file }}" alt="User image">
-        </figure>
-        </div>
-        <div class="media-content">
-            <p class="title is-3 mb-0 is-hidden-mobile">{{ user.username }}</p>
-            <div class="is-hidden-desktop">
-                <p class="title is-4 mb-1">{{ user.username }}</p>
-                <figure class="image has-ratio is-fullwidth">
-                    <img src="{{ image_file }}" alt="User image">
-                </figure>
-            </div>
-            <div class="field is-grouped is-grouped-multiline is-clearfix">
-                <div class="control">
-                {% if user.last_seen %}
-                  <div class="tags has-addons">
-                    <span class="tag is-dark">Last Visit</span>
-                    <span class="tag is-info">{{ moment(user.last_seen).format('LLL') }}</span>
-                  </div>
-                </div>
-                {% endif %}
-                <div class="control">
-                  <div class="tags has-addons">
-                    <span class="tag is-dark">{{ current_user.followers.count() }}</span>
-                    <span class="tag is-primary">followers</span>
-                  </div>
-                </div>
-                <div class="control">
-                  <div class="tags has-addons">
-                    <span class="tag is-dark">{{ current_user.followed.count() }}</span>
-                    <span class="tag is-info">following</span>
-                  </div>
-                </div>
-              </div>
-              {% if current_user != user%}
-              <div class="field is-grouped is-grouped-multiline is-clearfix">
-                <div class="control">
-                  <div class="tags has-addons">
-                    {% if not current_user.is_following(user) %}
-                    <span class="tag is-medium is-dark"> <i class="fa fa-check" aria-hidden="true"></i></span>
-                    <form action="{{ url_for('users.follow', username=user.username) }}" method="post">
-                        {{ form.hidden_tag() }}
-                        <button class="tag is-medium is-primary">follow</button>
-                    </form>
-                    {% else %}
-                    <span class="tag is-medium is-dark"> <i class="fa fa-times" aria-hidden="true"></i></span>
-                    <form action="{{ url_for('users.unfollow', username=user.username) }}" method="post">
-                        {{ form.hidden_tag() }}
-                        <button class="tag is-medium is-danger">unfollow</button>
-                    </form>
-                    {% endif %}
-                  </div>
-                </div>
-                <div class="control">
-                  <div class="tags has-addons">
-                    <span class="tag is-medium is-dark"><i class="fa fa-envelope" aria-hidden="true"></i></span>
-                    <span class="tag is-medium is-info"><a href="" class="has-text-white">Contact Me</a></span>
-                  </div>
-                </div>
-              </div>
-        </div>
-        {% endif %}
-    </div>
-    {% if current_user.about_me %}
-        <div class="content notification">
-            {{ current_user.about_me }}
-        </div>
-    {% endif %}
-  </div>
-    <hr>
-    {% for poem in poems %}
-    <table>
-        <tr valign="top">
-            {% if image_file  %} 
-            <td><img src="{{ image_file }} " class="img-thumbnail" style="width: 40px; height: 40px;" ></td>
-            {% else %}
-            <td><img src="{{ user.avatar(48) }}"></td>
-            {% endif %}
-            <td>{{ poem.author.username }} says:<br>{{ poem.body }}</td>
-        </tr>
-    </table>
-    {% endfor %}
+  {% include "partial/user_profile.html" %}
+
+    <section class="columns is-gapless is-mobile">
+      <div class="column"><hr></div>
+      <div class="column has-text-centered">
+        <p class="title is-3 pt-2 has-text-info is-hidden-mobile">My Poems</p>
+        <p class="title is-6 pt-4 has-text-info is-hidden-desktop">My Poems</p>
+      </div>
+      <div class="column"><hr></div>
+    </section>
+
+  {% for poem in poems %}
+    {% include "partial/poem.html" %}
+  {% endfor %}
 {% endblock %}

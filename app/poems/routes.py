@@ -21,7 +21,7 @@ def create_poem():
     return render_template("poems/create_poem.html", form=form, title="Create")
 
 
-@bp.route("/poems/<int:id>", methods=["GET", "POST"])
+@bp.route("/<int:id>", methods=["GET", "POST"])
 def update_poem(id):
     categories = [(c.id, c.name) for c in Category.query.all()]
     form = PoemForm()
@@ -40,9 +40,10 @@ def update_poem(id):
         form.category.data = poem.category
     return render_template("poems/create_poem.html", form=form, title="Update")
 
-@bp.route("/poems")
-def poem_list():
-    return render_template("poems/poem_list.html", poems=Poem.query.all())
+@bp.route("/<username>")
+def poem_list(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    return render_template("poems/poem_list.html", poems=user.poems.all(), user=user)
 
 @bp.route("/poems/delete/<int:id>", methods=["GET", "POST"])
 def delete_poem(id):

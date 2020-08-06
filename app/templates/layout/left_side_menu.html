@@ -9,7 +9,7 @@
         Dashboard
       </p>
       <ul class="menu-list">
-        <li><a href="{{url_for('users.dashboard', username=current_user.username) }}">My Account</a></li>
+        <li><a href="{{url_for('users.update_account', username=current_user.username) }}">My Account</a></li>
       </ul>
       <p class="menu-label">
         Messages
@@ -23,7 +23,7 @@
           </a>
         </li>          
         <li><a href="{{ url_for('users.outbox', username=current_user.username)}}">Sent</a></li>
-        <li><a href="{{ url_for('users.send_message', username=current_user.username)}}">New Message</a></li>
+        <!-- <li><a href="{{ url_for('users.send_message', username=current_user.username)}}">New Message</a></li> -->
       </ul>
       {% if current_user.is_admin %}
         <p class="menu-label">
@@ -42,7 +42,7 @@
           <a href="{{ url_for('poems.create_poem') }}">Create Poem</a>
         </li>
         <li>
-          <a href="{{ url_for('poems.poem_list') }}">All Poems</a>
+          <a href="{{ url_for('poems.poem_list', username=current_user.username) }}">All Poems</a>
         </li>
         <li><a>Manage Comments</a></li>
       </ul>

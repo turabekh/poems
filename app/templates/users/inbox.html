@@ -1,7 +1,7 @@
-{% extends "dashboard_base.html" %}
+{% extends "layout/base.html" %}
 
-{% block dashboard %}
-<section class="mt-3 pt-4">
-    {% include "partials/message_list.html" %}
-</section>
-{% endblock dashboard %}
+{% block content %}
+    <section class="">
+        {% include "partial/incoming_message_list.html" %}
+    </section>
+{% endblock content %}

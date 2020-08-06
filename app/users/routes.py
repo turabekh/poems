@@ -27,28 +27,20 @@ def save_picture(form_picture):
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
-    image_file = None
-    if user.image_file:
-        image_file = url_for('static', filename='profile_pics/' + user.image_file)
-    
-    poems = [
-        {'author': user, 'body': 'Test post #1'},
-        {'author': user, 'body': 'Test post #2'}
-    ]
-    
+    image_file = url_for('static', filename='profile_pics/' + user.image_file)
+    poems = user.poems.all()
     form = EmptyForm()
     return render_template('users/user.html', user=user, poems=poems, image_file=image_file, form=form)
 
 
-@bp.route('/<username>/dashboard', methods=['GET', 'POST'])
+@bp.route('/<username>/update', methods=['GET', 'POST'])
 @login_required
-def dashboard(username):
+def update_account(username):
     form = EditProfileForm()
-    user = User.query.filter_by(username=username).first()
+    user = User.query.filter_by(username=username).first_or_404()
     if user != current_user:
         return redirect(url_for("main.index"))
     if form.validate_on_submit():
-        print(form.picture)
         if form.picture.data:
             picture_file = save_picture(form.picture.data)
             current_user.image_file = picture_file
@@ -57,15 +49,13 @@ def dashboard(username):
         current_user.about_me = form.about_me.data
         db.session.commit()
         flash('Your account has been updated', 'success')
-        return redirect(url_for('users.dashboard', username=current_user.username))
+        return redirect(url_for('users.update_account', username=current_user.username))
     elif request.method == 'GET':
-        image_file = None
-        if current_user.image_file:
-            image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+        image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
         form.username.data = current_user.username
         form.email.data = current_user.email
         form.about_me.data = current_user.about_me
-    return render_template('users/dashboard.html', form=form, image_file=image_file) 
+    return render_template('users/update_account.html', form=form, image_file=image_file, user=user) 
 
 
 
@@ -111,7 +101,7 @@ def unfollow(username):
 
 @bp.route("/<username>/inbox")
 def inbox(username):
-    user = User.query.filter_by(username=username).first()
+    user = User.query.filter_by(username=username).first_or_404()
     if user == current_user:
         messages = current_user.received_messages
         return render_template("users/inbox.html", messages = messages)
@@ -120,7 +110,7 @@ def inbox(username):
 
 @bp.route("/<username>/outbox")
 def outbox(username):
-    user = User.query.filter_by(username=username).first()
+    user = User.query.filter_by(username=username).first_or_404()
     if user == current_user:
         messages = current_user.sent_messages
         return render_template("users/outbox.html", messages = messages)
