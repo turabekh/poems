@@ -69,7 +69,7 @@ function showLike(id, userId) {
             console.log('Success:', data);
         })
         .catch((error) => {
-        console.error('Error:', error);
+            window.location.replace("/auth/login")
         });
 }
 

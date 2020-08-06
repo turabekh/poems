@@ -170,7 +170,9 @@ class Poem(SearchableMixin, db.Model):
         return [u.username for u in self.liked]
     
     def get_short_user_likes(self):
-        r = [n for n in self.get_liked_users() if n != current_user.username][:2]
+        r = self.get_liked_users()[:2]
+        if current_user.is_authenticated:
+            r = [n for n in self.get_liked_users() if n != current_user.username][:2]
         if len(self.get_liked_users()) > 2:
             r.append(f" and {len(self.get_liked_users()) -2 } others" )
         if current_user in self.liked:
