@@ -2,6 +2,7 @@ from flask import render_template, flash, redirect, url_for
 from app import db
 from app.poems import bp
 from app.poems.forms import PoemForm, CategoryForm
+from app.main.forms import CommentForm
 from flask_login import current_user, login_required
 from app.models import User, Poem, Category
 
@@ -27,6 +28,8 @@ def update_poem(id):
     form = PoemForm()
     form.category.choices = categories
     poem = Poem.query.filter_by(id=id).first_or_404()
+    if poem.author != current_user:
+        return redirect(url_for("main.index"))
     if form.validate_on_submit():
         poem.title = form.title.data
         poem.body = form.body.data 
@@ -40,17 +43,22 @@ def update_poem(id):
         form.category.data = poem.category
     return render_template("poems/create_poem.html", form=form, title="Update")
 
-@bp.route("/<username>")
+@bp.route("/<username>", methods=["GET", "POST"])
 def poem_list(username):
+    comment_form = CommentForm()
     user = User.query.filter_by(username=username).first_or_404()
-    return render_template("poems/poem_list.html", poems=user.poems.all(), user=user)
+    if user != current_user:
+        return redirect(url_for("main.index"))
+    return render_template("poems/poem_list.html", poems=user.poems.all(), user=user, comment_form=comment_form)
 
 @bp.route("/poems/delete/<int:id>", methods=["GET", "POST"])
 def delete_poem(id):
-    poem = Poem.query.filter_by(id=id).first_or_404() 
+    poem = Poem.query.filter_by(id=id).first_or_404()
+    if poem.author != current_user:
+        return redirect(url_for("main.index"))
     db.session.delete(poem)
     db.session.commit() 
-    return redirect(url_for("poems.poem_list"))
+    return redirect(url_for("poems.poem_list", username=poem.author.username))
 
 
 @bp.route("/category", methods=["GET", "POST"])

@@ -5,6 +5,7 @@ from flask import render_template, flash, redirect, url_for, request, current_ap
 from app import db
 from app.users import bp
 from app.users.forms import EditProfileForm, EmptyForm, MessageForm
+from app.main.forms import CommentForm
 from flask_login import current_user, login_required
 from app.models import User, Poem, Category, Message
 
@@ -23,14 +24,15 @@ def save_picture(form_picture):
     return picture_fn
 
 
-@bp.route('/user/<username>')
+@bp.route('/user/<username>', methods=["GET", "POST"])
 @login_required
 def user(username):
+    comment_form = CommentForm()
     user = User.query.filter_by(username=username).first_or_404()
     image_file = url_for('static', filename='profile_pics/' + user.image_file)
     poems = user.poems.all()
     form = EmptyForm()
-    return render_template('users/user.html', user=user, poems=poems, image_file=image_file, form=form)
+    return render_template('users/user.html', user=user, poems=poems, image_file=image_file, form=form, comment_form=comment_form)
 
 
 @bp.route('/<username>/update', methods=['GET', 'POST'])

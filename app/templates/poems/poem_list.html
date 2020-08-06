@@ -1,42 +1,58 @@
 {% extends "layout/base.html" %}
 
 {% block content %}
-<section class="table-container">
-    <table class="table is-fullwidth">
-        <thead>
-            <tr>
-              <th>#</th>
-              <th>Poem Title</th>
-              <th>Update</th>
-              <th>Delete</th>
-            </tr>
-        </thead>
-        <tfoot>
-            <tr>
-              <th>#</th>
-              <th>Poem Title</th>
-              <th>Update</th>
-              <th>Delete</th>
-            </tr>
-        </tfoot>
-        <tbody>
-            {% for poem in poems %}
-            <tr>
-                <th>{{loop.index}}</th>
-                <td>{{poem.title}}</td>
-                <td>
-                    <button class="button is-small is-primary">
-                        <a href="{{ url_for('poems.update_poem', id=poem.id) }}">Update</a>
-                    </button>
-                </td>
-                <td>
-                    <button class="button is-small is-danger">
-                        <a href="{{ url_for('poems.delete_poem', id=poem.id) }}">Delete</a>
-                    </button>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</section>
+    {% if user == current_user %}
+        <section class="table-container">
+            <table class="table is-fullwidth">
+                <thead>
+                    <tr>
+                    <th>#</th>
+                    <th>Poem Title</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                    <th>#</th>
+                    <th>Poem Title</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    {% for poem in poems %}
+                    <tr>
+                        <th>{{loop.index}}</th>
+                        <td>{{poem.title}}</td>
+                        <td>
+                            <button class="button is-small is-primary">
+                                <a href="{{ url_for('poems.update_poem', id=poem.id) }}">Update</a>
+                            </button>
+                        </td>
+                        <td>
+                            <button class="button is-small is-danger">
+                                <a href="{{ url_for('poems.delete_poem', id=poem.id) }}">Delete</a>
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+        <section class="columns is-gapless is-mobile">
+            <div class="column"><hr></div>
+            <div class="column has-text-centered">
+            <p class="title is-3 pt-2 has-text-info is-hidden-mobile">My Poems</p>
+            <p class="title is-6 pt-4 has-text-info is-hidden-desktop">My Poems</p>
+            </div>
+            <div class="column"><hr></div>
+        </section>
+
+        {% for poem in poems %}
+        {% include "partial/poem.html" %}
+        {% endfor %}
+
+    {% endif %}
+
 {% endblock content %}

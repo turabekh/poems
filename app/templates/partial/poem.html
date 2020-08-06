@@ -62,30 +62,25 @@
               </a>
               <a class="level-item" aria-label="like">
                 <span class="icon is-small">
-                  <i class="fas fa-heart" aria-hidden="true"></i>
+                  <i class="fa fa-thumbs-up" aria-hidden="true"></i>
                 </span>
               </a>
             </div>
+            {% if poem.author == current_user %}
+              <div class="level-right">
+                <div class="level-item">
+                  <a href="{{ url_for('poems.update_poem', id=poem.id)}}" class="button is-primary is-small is-rounded">update</a>
+                </div>
+                <div class="level-item">
+                  <a href="{{ url_for('poems.delete_poem', id=poem.id)}}" class="button is-danger is-small is-rounded">delete</a>
+                </div>
+              </div>
+            {% endif %}
           </nav>
           <hr>
   
           {% if current_user.is_authenticated %}
-          <article class="media">
-            <div class="media-left">
-              <figure class="image is-32x32 is-square">
-                <img src="{{ url_for('static', filename='profile_pics/' + current_user.image_file) }}" class="is-rounded" alt="Image">
-              </figure>
-            </div>
-            <div class="media-content">
-              <div class="content">
-                <div class="field">
-                  <div class="control">
-                    {% include 'partials/comment_form.html' %}
-                  </div>
-                </div>
-              </div>
-            </div>
-            </article>
-      {% endif %}
+            {% include "forms/comments/create_comment_form.html" %}
+          {% endif %}
     </div>
   </section>

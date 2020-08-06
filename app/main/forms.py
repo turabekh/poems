@@ -10,3 +10,7 @@ class ContactUsForm(FlaskForm):
     subject = StringField('Subject')
     content = TextAreaField('Content', validators=[DataRequired()])
     submit = SubmitField('Submit')
+
+class CommentForm(FlaskForm):
+    body = StringField('Content', validators=[DataRequired()])
+    submit = SubmitField('Submit')

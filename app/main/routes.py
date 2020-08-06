@@ -4,7 +4,7 @@ from flask_login import current_user
 from app import db
 from app.models import User, Poem, Category
 from app.main import bp
-from .forms import ContactUsForm
+from .forms import ContactUsForm, CommentForm
 from app.auth.email import send_message_to_admins
 
 
@@ -16,9 +16,10 @@ def before_request():
         db.session.commit()
         
 
-@bp.route('/')
-@bp.route('/index')
+@bp.route('/', methods=["GET", "POST"])
+@bp.route('/index', methods=["GET", "POST"])
 def index():
+    comment_form = CommentForm()
     page = request.args.get('page', 1, type=int)
     poems = Poem.query.order_by(Poem.created_at.desc()).paginate(page, current_app.config["POEMS_PER_PAGE"], False)
     next_url = url_for('main.index', page=poems.next_num) \
@@ -26,7 +27,7 @@ def index():
     prev_url = url_for('main.index', page=poems.prev_num) \
         if poems.has_prev else None
     return render_template('main/index.html', poems=poems.items, next_url=next_url,
-                           prev_url=prev_url)
+                           prev_url=prev_url, comment_form=comment_form)
 
 
 @bp.route('/search')
