@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, jsonify, request
 from app import db
 from app.poems import bp
 from app.poems.forms import PoemForm, CategoryForm
@@ -60,6 +60,23 @@ def delete_poem(id):
     db.session.commit() 
     return redirect(url_for("poems.poem_list", username=poem.author.username))
 
+
+@bp.route("/like/<int:id>", methods=["POST"])
+def like(id):
+    poem = Poem.query.filter_by(id=id).first_or_404()
+    body = request.get_json()
+    user = User.query.filter_by(id=body.get("user_id", None)).first_or_404()
+    poem.like(user)
+    print(poem.get_liked_users())
+    return jsonify({"id": id, "user_likes": poem.get_short_user_likes()})
+
+@bp.route("/unlike/<int:id>", methods=["POST"])
+def unlike(id):
+    poem = Poem.query.filter_by(id=id).first_or_404()
+    body = request.get_json()
+    user = User.query.filter_by(id=body.get("user_id", None)).first_or_404()
+    poem.unlike(user)
+    return jsonify({"id": id, "user_likes": poem.get_short_user_likes()})
 
 @bp.route("/category", methods=["GET", "POST"])
 def create_category():

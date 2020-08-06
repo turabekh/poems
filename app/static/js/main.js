@@ -31,9 +31,48 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const fileInput = document.querySelector('#file-js-example input[type=file]');
-fileInput.onchange = () => {
-    if (fileInput.files.length > 0) {
-    const fileName = document.querySelector('#file-js-example .file-name');
-    fileName.textContent = fileInput.files[0].name;
+if (fileInput) {
+    fileInput.onchange = () => {
+        if (fileInput.files.length > 0) {
+        const fileName = document.querySelector('#file-js-example .file-name');
+        fileName.textContent = fileInput.files[0].name;
+        }
     }
+}
+
+
+function showLike(id, userId) {
+    var d = document.querySelector("#like-"+id);
+    var pText = d.innerText;
+    var url;
+    if (pText.startsWith("You")) {
+        url = "/poems/unlike/" + id
+    } else {
+        url = "/poems/like/" + id
+    }
+
+    fetch(url, {
+        method: 'POST', // or 'PUT'
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({"user_id": userId}),
+      })
+      .then(response => response.json())
+        .then(data => {
+            var p = document.createElement("p");
+            p.textContent = data["user_likes"];
+            p.setAttribute("class", "help")
+            var parentDiv = document.querySelector("#like-"+id);
+            parentDiv.innerHTML = "";
+            parentDiv.appendChild(p)
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+        console.error('Error:', error);
+        });
+}
+
+function makeLikeStr(value) {
+
 }

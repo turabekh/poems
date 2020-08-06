@@ -1,7 +1,7 @@
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user
 from app import login
 from hashlib import md5
 from time import time
@@ -159,14 +159,26 @@ class Poem(SearchableMixin, db.Model):
     def like(self, user):
         if not self.already_liked(user):
             self.liked.append(user) 
+            db.session.commit()
         
     def unlike(self, user):
         if self.already_liked(user):
             self.liked.remove(user) 
+            db.session.commit()
+
     def get_liked_users(self):
         return [u.username for u in self.liked]
     
-
+    def get_short_user_likes(self):
+        r = [n for n in self.get_liked_users() if n != current_user.username][:2]
+        if len(self.get_liked_users()) > 2:
+            r.append(f" and {len(self.get_liked_users()) -2 } others" )
+        if current_user in self.liked:
+            if len(r) == 1:
+                r = ["You"] + r
+            else:
+                r [0]= "You"
+        return ", ".join(r)
     def __repr__(self):
         return '<Poem {}>'.format(self.id)
 

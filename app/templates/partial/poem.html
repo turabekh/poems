@@ -50,21 +50,16 @@
         <hr>
         <nav class="level px-5 is-mobile">
             <div class="level-left">
-              <a class="level-item" aria-label="reply">
-                <span class="icon is-small">
-                  <i class="fas fa-reply" aria-hidden="true"></i>
-                </span>
-              </a>
-              <a class="level-item" aria-label="retweet">
-                <span class="icon is-small">
-                  <i class="fas fa-retweet" aria-hidden="true"></i>
-                </span>
-              </a>
-              <a class="level-item" aria-label="like">
+              <a class="level-item" data-poem-id="{{poem.id}}" onclick="showLike({{ poem.id}}, {{current_user.id}})">
                 <span class="icon is-small">
                   <i class="fa fa-thumbs-up" aria-hidden="true"></i>
                 </span>
               </a>
+                <div id="like-{{poem.id}}" class="level-item">
+                  {% if poem.liked|length > 0 %}
+                    <p class="help">{{poem.get_short_user_likes() }}</p>
+                  {% endif %}
+                </div>
             </div>
             {% if poem.author == current_user %}
               <div class="level-right">
