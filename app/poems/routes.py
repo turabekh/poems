@@ -61,27 +61,34 @@ def delete_poem(id):
     return redirect(url_for("poems.poem_list", username=poem.author.username))
 
 
-@bp.route("/like/<int:id>", methods=["POST"])
-def like(id):
+@bp.route("/like/<int:id>/<int:user_id>", methods=["GET"])
+def like(id, user_id):
     poem = Poem.query.filter_by(id=id).first_or_404()
-    body = request.get_json()
-    user = User.query.filter_by(id=body.get("user_id", None)).first_or_404()
+    user = User.query.filter_by(id=user_id).first_or_404()
     poem.like(user)
     print(poem.get_liked_users())
     return jsonify({"id": id, "user_likes": poem.get_short_user_likes()})
 
-@bp.route("/unlike/<int:id>", methods=["POST"])
-def unlike(id):
+@bp.route("/unlike/<int:id>/<int:user_id>", methods=["GET"])
+def unlike(id, user_id):
+    print(request)
+    print("ID: ", id)
+    print("I am here")
     poem = Poem.query.filter_by(id=id).first_or_404()
-    body = request.get_json()
-    user = User.query.filter_by(id=body.get("user_id", None)).first_or_404()
+    user = User.query.filter_by(id=user_id).first_or_404()
     poem.unlike(user)
     return jsonify({"id": id, "user_likes": poem.get_short_user_likes()})
 
 @bp.route("/category", methods=["GET", "POST"])
 def create_category():
+    if not current_user.is_admin:
+        return redirect(url_for("main.index"))
     form = CategoryForm()
     if form.validate_on_submit():
+        name = Category.query.filter_by(name=form.name.data).first()
+        if name is not None:
+            flash(f"{form.name.data} has already existed. Please enter a different name", "danger")
+            return redirect(url_for(".create_category"))
         category = Category(name=form.name.data)
         db.session.add(category)
         db.session.commit()
@@ -95,9 +102,13 @@ def category_list():
 
 @bp.route("/categories/<int:id>", methods=["GET", "POST"])
 def update_category(id):
-    category = Category.query.filter_by(id=id).first()
+    category = Category.query.filter_by(id=id).first_or_404()
     form = CategoryForm()
     if form.validate_on_submit():
+        name = Category.query.filter_by(name=form.name.data).first()
+        if name != category:
+            flash(f"{form.name.data} - already exists. Please enter a different name", "danger")
+            return redirect(url_for(".category_list"))
         category.name = form.name.data 
         db.session.commit()
         flash("Category updated successfully!", "success")

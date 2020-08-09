@@ -1,0 +1,14 @@
+<p class="box has-background-light" style="border-left: 3px solid {{ comment.color() }}; max-width: {{ comment.width() }}%; margin-left: {{ comment.margin() }}%;">
+    <small class="mb-0">{{ comment.author.username }} {% if comment.parent %} {{ 'replied to ' + comment.parent.author.username }} {% endif %}</small> <small>{{ moment(comment.timestamp).format('LLL') }}</small>
+    {% if comment.poem.author == current_user or comment.author == current_user %}
+        <button onclick="deleteComment(event, {{ comment.poem.id }}, {{comment.id}})" class="button is-small is-danger is-rounded is-pulled-right">delete</button>
+    {% endif %}
+    <br>
+    <span class="is-size-6">{{ comment.body }}</span>
+    <br>
+    <i class="fa fa-reply ml-5" aria-hidden="true"></i>
+    <a class="ml-1" onclick="commentReply(event, {{ comment.id }}, {{ comment.poem.id}})">Reply</a>
+    {% if comment.get_replies()|length > 0 %}
+        <small>{{ comment.get_replies()|length }} replies</small>
+    {% endif %}
+</p>

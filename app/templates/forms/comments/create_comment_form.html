@@ -8,9 +8,11 @@
       <div class="content">
         <div class="field">
           <div class="control">
-              <form action="" method="post">
+          <form id="comment-form-{{poem.id}}" action="" method="post" onsubmit="commentSubmit(event, {{poem.id}})">
+                {{ comment_form.hidden_tag() }}
+                {{ comment_form.parent_id }}
                 {{ comment_form.body(class_="input is-small is-rounded", placeholder="write a comment") }}
-              </form>
+            </form>
           </div>
         </div>
       </div>

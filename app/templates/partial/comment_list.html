@@ -1,0 +1,5 @@
+<div id="comment-list-box-{{poem.id}}" class="content mt-3">
+    {% for comment in poem.get_comments() %}
+        {% include "partial/comment.html" %}
+    {% endfor %}
+</div>

@@ -77,5 +77,6 @@
           {% if current_user.is_authenticated %}
             {% include "forms/comments/create_comment_form.html" %}
           {% endif %}
+          {% include "partial/comment_list.html" %}
     </div>
   </section>

@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField
+from wtforms import StringField, SubmitField, TextAreaField, HiddenField
 from wtforms.validators import DataRequired, Email
 
 
@@ -12,5 +12,5 @@ class ContactUsForm(FlaskForm):
     submit = SubmitField('Submit')
 
 class CommentForm(FlaskForm):
+    parent_id = HiddenField()
     body = StringField('Content', validators=[DataRequired()])
-    submit = SubmitField('Submit')
