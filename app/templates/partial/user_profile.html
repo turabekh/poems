@@ -2,15 +2,15 @@
   <div class="media">
       <div class="media-left pt-3 is-hidden-mobile">
         <figure class="image is-128x128">
-            <img src="{{ image_file }}" alt="User image">
+            <img src="{{ url_for('static', filename='profile_pics/' + user.image_file)  }}" alt="User image">
         </figure>
       </div>
       <div class="media-content">
-          <p class="title is-3 mb-0 is-hidden-mobile">{{ user.username }}</p>
+          <p class="title is-3 mb-0 is-hidden-mobile"><a href="{{ url_for('users.user', username=user.username)}}">{{ user.username }}</a></p>
           <div class="is-hidden-desktop">
-              <p class="title is-4 mb-1">{{ user.username }}</p>
+              <p class="title is-4 mb-1"><a href="{{ url_for('users.user', username=user.username)}}">{{ user.username }}</a></p>
               <figure class="image has-ratio is-fullwidth">
-                  <img src="{{ image_file }}" alt="User image">
+                  <img src="{{ url_for('static', filename='profile_pics/' + user.image_file)  }}" alt="User image">
               </figure>
           </div>
           <div class="field is-grouped is-grouped-multiline is-clearfix">
@@ -35,33 +35,35 @@
                 </div>
               </div>
             </div>
-            {% if current_user != user%}
-              <div class="field is-grouped is-grouped-multiline is-clearfix">
-                <div class="control">
-                  <div class="tags has-addons">
-                    {% if not current_user.is_following(user) %}
-                    <span class="tag is-medium is-dark"> <i class="fa fa-check" aria-hidden="true"></i></span>
-                    <form action="{{ url_for('users.follow', username=user.username) }}" method="post">
-                        {{ form.hidden_tag() }}
-                        <button class="tag is-medium is-primary">follow</button>
-                    </form>
-                    {% else %}
-                    <span class="tag is-medium is-dark"> <i class="fa fa-times" aria-hidden="true"></i></span>
-                    <form action="{{ url_for('users.unfollow', username=user.username) }}" method="post">
-                        {{ form.hidden_tag() }}
-                        <button class="tag is-medium is-danger">unfollow</button>
-                    </form>
-                    {% endif %}
+            {% if current_user.is_authenticated %}
+              {% if current_user != user%}
+                <div class="field is-grouped is-grouped-multiline is-clearfix">
+                  <div class="control">
+                    <div class="tags has-addons">
+                      {% if not current_user.is_following(user) %}
+                      <span class="tag is-medium is-dark"> <i class="fa fa-check" aria-hidden="true"></i></span>
+                      <form action="{{ url_for('users.follow', username=user.username) }}" method="post">
+                          {{ form.hidden_tag() }}
+                          <button class="tag is-medium is-primary">follow</button>
+                      </form>
+                      {% else %}
+                      <span class="tag is-medium is-dark"> <i class="fa fa-times" aria-hidden="true"></i></span>
+                      <form action="{{ url_for('users.unfollow', username=user.username) }}" method="post">
+                          {{ form.hidden_tag() }}
+                          <button class="tag is-medium is-danger">unfollow</button>
+                      </form>
+                      {% endif %}
+                    </div>
                   </div>
-                </div>
-                <div class="control">
-                  <div class="tags has-addons">
-                    <span class="tag is-medium is-dark"><i class="fa fa-envelope" aria-hidden="true"></i></span>
-                    <span class="tag is-medium is-info"><a href="" class="has-text-white">Contact Me</a></span>
-                  </div>
-                </div>
-            </div>
+              </div>
+              {% endif %}
             {% endif %}
+            <div class="control">
+              <div class="tags has-addons">
+                <span class="tag is-medium is-dark"><i class="fa fa-envelope" aria-hidden="true"></i></span>
+                <span class="tag is-medium is-info"><a href="" class="has-text-white">Contact Me</a></span>
+              </div>
+            </div>
       </div>
   </div>
   {% if user.about_me %}

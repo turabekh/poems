@@ -50,6 +50,7 @@ function showLike(id, userId) {
     } else {
         url = "/poems/like/" + id + "/" + userId
     }
+    if (!userId || !id) {window.location.replace("/auth/login")}
     console.log(url)
     fetch(url, {
         method: 'GET', // or 'PUT'
@@ -184,7 +185,7 @@ function deleteComment(e, poem_id, comment_id) {
 function makeComment(comment, can_delete=false) {
     return `
     <p class="box has-background-light mt-0" style="border-left: 3px solid ${comment.color}; max-width: ${comment.width}%; margin-left: ${comment.margin}%;">
-    <small class="mb-0">${comment.author} ${comment.parent_author ? 'replied to ' + comment.parent_author: '' }</small> <small>${moment(comment.created_at).format('LLL')}</small>
+    <small class="mb-0"><a href="/user/${comment.author}">${comment.author}</a> ${comment.parent_author ? 'replied to <a href="/user/' + comment.parent_author + '">' + comment.parent_author + '</a>': '' }</small> <small>${moment(comment.created_at).format('LLL')}</small>
     ${can_delete ? '<button onclick="deleteComment(event, '  + comment.poem_id + ', ' + comment.id + ')" class="button is-small is-danger is-rounded is-pulled-right">delete</button>' : ''}
     <br>
     <span class="is-size-6">${comment.body}</span>

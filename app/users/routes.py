@@ -138,3 +138,31 @@ def send_message(username):
         return redirect(url_for("users.outbox", username=current_user.username))
     else:
         return render_template("users/send_message.html", form=form)
+
+
+@bp.route("/users/search")
+def search():
+    form = EmptyForm()
+    q = request.args.get("user-search", None) 
+    if q is None or (q == ""):
+        return redirect(url_for("users.user_list"))
+    page = request.args.get('page', 1, type=int)
+    users, total = User.search(q, page,
+                               current_app.config['USERS_PER_PAGE'])
+    next_url = url_for('users.search', q=q, page=page + 1) \
+        if total > page * current_app.config['USERS_PER_PAGE'] else None
+    prev_url = url_for('users.search', q=q, page=page - 1) \
+        if page > 1 else None
+    return render_template('users/user_list.html', users=sorted(users.all(), key=lambda u: u.username),
+                           next_url=next_url, prev_url=prev_url, form=form)
+@bp.route("/users")
+def user_list():
+    form = EmptyForm()
+    page = request.args.get('page', 1, type=int)
+    users = User.query.order_by(User.username).paginate(page, current_app.config["USERS_PER_PAGE"], False)
+    next_url = url_for('users.user_list', page=users.next_num) \
+        if users.has_next else None
+    prev_url = url_for('users.user_list', page=users.prev_num) \
+        if users.has_prev else None
+    return render_template('users/user_list.html', users=users.items, next_url=next_url,
+                        prev_url=prev_url, form=form)

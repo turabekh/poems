@@ -56,7 +56,8 @@ followers = db.Table('followers',
     db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
 )
 
-class User(UserMixin, db.Model):
+class User(SearchableMixin, UserMixin, db.Model):
+    __searchable__ = ["username",]
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
@@ -65,6 +66,7 @@ class User(UserMixin, db.Model):
     about_me = db.Column(db.String(140))
     is_admin = db.Column(db.Boolean, default=False)
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     poems = db.relationship('Poem', backref='author', lazy='dynamic')
     sent_messages = db.relationship('Message', backref='sent_user', lazy=True, foreign_keys='Message.sent_user_id')
     received_messages = db.relationship('Message', backref='received_user', lazy=True, foreign_keys='Message.received_user_id')
@@ -126,7 +128,8 @@ class User(UserMixin, db.Model):
         return '<User {}>'.format(self.username)    
 
 
-class Category(db.Model):
+class Category(SearchableMixin, db.Model):
+    __searchable__ = ["name",]
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(300), nullable=False) 
     poems = db.relationship('Poem', backref='category', lazy='dynamic')

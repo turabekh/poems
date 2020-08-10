@@ -1,5 +1,5 @@
 <p class="box has-background-light" style="border-left: 3px solid {{ comment.color() }}; max-width: {{ comment.width() }}%; margin-left: {{ comment.margin() }}%;">
-    <small class="mb-0">{{ comment.author.username }} {% if comment.parent %} {{ 'replied to ' + comment.parent.author.username }} {% endif %}</small> <small>{{ moment(comment.timestamp).format('LLL') }}</small>
+    <small class="mb-0"><a href="{{ url_for('users.user', username=comment.author.username) }}">{{ comment.author.username }}</a>  {% if comment.parent %} {{ 'replied to ' +  comment.parent.author.username }} {% endif %}</small> <small>{{ moment(comment.timestamp).format('LLL') }}</small>
     {% if comment.poem.author == current_user or comment.author == current_user %}
         <button onclick="deleteComment(event, {{ comment.poem.id }}, {{comment.id}})" class="button is-small is-danger is-rounded is-pulled-right">delete</button>
     {% endif %}

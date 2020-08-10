@@ -1,0 +1,18 @@
+{% extends "layout/base.html" %}
+
+{% block content %}
+    <section class="">
+        {% if users|length < 1 %} 
+        <article class="message is-info box mt-5">
+            <div class="message-body">
+            <strong>No results found</strong>
+            </div>
+        </article>
+        {% else %}
+            {% for user in users %} 
+                {% include "partial/user_profile.html" %}
+            {% endfor %}
+        {% endif %}
+    </section>
+    {% include 'partial/pagination.html' %}
+{% endblock content %}

@@ -21,6 +21,16 @@
            {% include "layout/mobile_nav.html" %}
             <div class="navbar-end">
               <div class="navbar-item">
+                <form class="field has-addons" action="{{ url_for('users.search')}}" method="GET">
+                  <p class="control">
+                    <input class="input" type="text" name="user-search" id="user-search" placeholder="Find a user">
+                  </p>
+                  <p class="control">
+                    <input type="submit" class="button is-primary" value="Search" />
+                  </p>
+                </form>
+              </div>
+              <div class="navbar-item">
                 <div class="buttons">
                     {% if current_user.is_authenticated %}
                         <a class="button is-light" href="{{ url_for('auth.logout') }}">
