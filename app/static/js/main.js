@@ -197,3 +197,18 @@ function makeComment(comment, can_delete=false) {
 }
 
 
+function changeFormTab(el, id) {
+    var tabs = document.querySelectorAll(".form-tab");
+    var tabContents = document.querySelectorAll(".tab-content");
+    tabs.forEach(t => {
+        t.classList.remove("is-active") 
+    });
+    el.classList.add("is-active")
+    console.dir(el)
+    tabContents.forEach(c => {
+        c.classList.add("is-hidden")
+        if (c.id === id) {
+            c.classList.remove("is-hidden")
+        }
+    });
+}

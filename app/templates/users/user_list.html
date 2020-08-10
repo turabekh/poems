@@ -12,7 +12,7 @@
             {% for user in users %} 
                 {% include "partial/user_profile.html" %}
             {% endfor %}
+            {% include 'partial/pagination.html' %}
         {% endif %}
     </section>
-    {% include 'partial/pagination.html' %}
 {% endblock content %}

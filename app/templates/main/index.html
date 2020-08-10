@@ -1,7 +1,8 @@
 {% extends "layout/base.html" %}
 
 {% block content %}
-    {% include 'forms/searchs/search_poem_form.html' %}
+{% include "partial/form_tab.html" %}    
+{% include 'forms/searchs/search_poem_form.html' %}
     {% if poems|length < 1 %}
         <article class="message is-info box mt-5">
             <div class="message-body">

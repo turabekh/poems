@@ -34,8 +34,8 @@ def index():
 @bp.route('/search')
 def search():
     comment_form = CommentForm()
-    q = request.args.get("q", None)
-    if q is None or (q == ""):
+    q = request.args.get("q", "")
+    if q == "":
         return redirect(url_for("main.index"))
     page = request.args.get('page', 1, type=int)
     poems, total = Poem.search(q, page,
@@ -46,6 +46,45 @@ def search():
         if page > 1 else None
     return render_template('main/index.html', poems=poems.all(),
                            next_url=next_url, prev_url=prev_url, comment_form=comment_form)
+
+@bp.route("/search/bycategory")
+def search_by_category():
+    comment_form = CommentForm()
+    q = request.args.get("q", "")
+    if q == "":
+        return redirect(url_for("main.index"))
+    page = request.args.get('page', 1, type=int)
+    categories, total = Category.search(q, page, 100)
+    poems = Poem.query.filter(Poem.category_id.in_([c.id for c in categories])) \
+                .order_by(Poem.category_id) \
+                .paginate(page, current_app.config["POEMS_PER_PAGE"], False)
+    next_url = url_for('main.search_by_category', q=q, page=page + 1) \
+    if total > page * current_app.config['POEMS_PER_PAGE'] else None
+    prev_url = url_for('main.search_by_category', q=q, page=page - 1) \
+    if page > 1 else None
+    return render_template('main/index.html', poems=poems.items,
+                           next_url=next_url, prev_url=prev_url, comment_form=comment_form)
+
+@bp.route("/search/byauthor")
+def search_by_author():
+    comment_form = CommentForm()
+    q = request.args.get("q", "")
+    if q == "":
+        return redirect(url_for("main.index"))
+    page = request.args.get('page', 1, type=int)
+    authors = User.query.filter(User.username.ilike(f"%{q}%"))
+    poems = Poem.query.filter(Poem.user_id.in_([u.id for u in authors])) \
+                .order_by(Poem.user_id) \
+                .paginate(page, current_app.config["POEMS_PER_PAGE"], False)
+    next_url = url_for('main.search_by_author', page=poems.next_num, q=q) \
+        if poems.has_next else None
+    prev_url = url_for('main.search_by_author', page=poems.prev_num, q=q) \
+        if poems.has_prev else None
+    return render_template('main/index.html', poems=poems.items,
+                           next_url=next_url, prev_url=prev_url, comment_form=comment_form)
+    
+
+
 
 
 @bp.route("/about")

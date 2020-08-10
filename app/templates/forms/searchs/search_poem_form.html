@@ -1,5 +1,5 @@
 <section>
-    <form action="{{ url_for('main.search') }}" method="get" class="box">
+    <form id="poemSearch" action="{{ url_for('main.search') }}" method="get" class="box tab-content" onclick="changeFormTab()">
         <div class="field has-addons">
             <div class="control is-expanded">
               <input class="input" type="text" placeholder="Find a Poem" name="q" value="">
@@ -10,5 +10,29 @@
               </button>
             </div>
           </div>
+    </form>
+    <form id="categorySearch" action="{{ url_for('main.search_by_category') }}" method="get" class="box tab-content is-hidden">
+      <div class="field has-addons">
+          <div class="control is-expanded">
+            <input class="input" type="text" placeholder="Enter category name" name="q" value="">
+          </div>
+          <div class="control">
+            <button class="button is-primary">
+              Search
+            </button>
+          </div>
+        </div>
+    </form>
+    <form id="authorSearch" action="{{ url_for('main.search_by_author') }}" method="get" class="box tab-content is-hidden">
+      <div class="field has-addons">
+          <div class="control is-expanded">
+            <input class="input" type="text" placeholder="Enter author username" name="q" value="">
+          </div>
+          <div class="control">
+            <button class="button is-primary">
+              Search
+            </button>
+          </div>
+        </div>
     </form>
 </section>
